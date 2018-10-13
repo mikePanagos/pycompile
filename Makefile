@@ -1,11 +1,11 @@
-calc: lex.yy.c y.tab.c
-	g++ -g lex.yy.c pythoninterpreter.tab.c -o calc
+mypython: lex.yy.c calc.tab.c calc.tab.h mypython.cpp mypython.h
+	g++ calc.tab.c lex.yy.c mypython.cpp mypython.h -o mypython
 
-lex.yy.c: y.tab.c pythoninterpreter.l
-	flex pythoninterpreter.l
+calc.tab.h:	calc.y
+	bison -d calc.y
 
-y.tab.c: pythoninterpreter.y
-	bison -d pythoninterpreter.y
+lex.yy.c: calc.l calc.tab.h
+	flex calc.l
 
-clean: 
-	rm -rf lex.yy.c pythoninterpreter.tab.c pythoninterpreter.tab.h calc calc.dSYM
+clean:
+	rm mypython calc.tab.c lex.yy.c calc.tab.h
